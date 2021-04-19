@@ -1,0 +1,24 @@
+<%- include('../include/head.ejs') %>
+    <div class="container">
+        <form action="" method="POST">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input id="title" class="form-control" type="text" name="title">
+            </div>
+            <div class="form-group">
+                <label for="imageUrl">Image URL</label>
+                <input id="imageUrl" class="form-control" type="text" name="imageUrl">
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input id="price" class="form-control" type="number" name="price">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" class="form-control" name="description"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add Product</button>
+        </form>
+    </div>
+<%- include('../include/footer.ejs') %>

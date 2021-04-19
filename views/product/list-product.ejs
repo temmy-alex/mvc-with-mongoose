@@ -1,0 +1,27 @@
+<%- include('../include/head.ejs') %>
+<div class="container">
+    <div class="row mt-5 mb-2">
+        <div class="col-md-9"></div>
+        <div class="col-md-3">
+            <a href="/add-product" class="btn btn-success">Add Product</a>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <% if(prods.length > 0) { %>
+            <% for (let product of prods) { %>
+                <div class="col-md-3 mt-5">
+                    <div class="card">
+                        <img src='<%= product.imageUrl %>' class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= product.title %></h5>
+                            <p class="card-text"><%= product.description %></p>
+                            <p class="card-text"><%= product.price %></p>
+                            <a href="#" class="btn btn-primary">Go to Products</a>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        <% } %>
+    </div>
+</div>
+<%- include('../include/footer.ejs') %>
