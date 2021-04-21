@@ -17,7 +17,7 @@
                 <label for="description">Description</label>
                 <textarea id="description" class="form-control" name="description"></textarea>
             </div>
-
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <button type="submit" class="btn btn-primary">Add Product</button>
         </form>
     </div>
