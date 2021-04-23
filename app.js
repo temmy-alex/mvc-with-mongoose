@@ -6,9 +6,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 // Call library user session express
+// Session store in memory browser
 const session = require('express-session');
 
 // Save session to mongodb
+// Session save in mongodb 
 const MongoDBStore = require('connect-mongodb-session')(session);
 
 // Library security for csrf attack
@@ -82,6 +84,7 @@ app.use((req, res, next) => {
 // Set middleware for csrf and session
 app.use((req, res, next) => {
     res.locals.isAuthenticated = req.session.isLoggedIn;
+    // Fitur csrf hanya berjalan form submit baik edit maupun simpan / hapus 
     res.locals.csrfToken = req.csrfToken();
     next();
 })

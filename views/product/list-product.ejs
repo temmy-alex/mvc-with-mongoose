@@ -16,7 +16,12 @@
                             <h5 class="card-title"><%= product.title %></h5>
                             <p class="card-text"><%= product.description %></p>
                             <p class="card-text"><%= product.price %></p>
-                            <a href="#" class="btn btn-primary">Go to Products</a>
+                            <a href="/edit-product/<%= product._id %>?edit=true" class="btn btn-primary">Edit</a>
+                            <form action="/delete-product" class="d-inline" method="POST" onsubmit="return confirm('Do you really want to submit the form?');">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                <input type="hidden" name="productId" value="<%= product._id %>">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
                         </div>
                     </div>
                 </div>
