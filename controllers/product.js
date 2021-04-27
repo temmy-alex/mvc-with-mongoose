@@ -1,6 +1,8 @@
 const { validationResult } = require('express-validator');
 const Product = require('./../models/product.js');
 
+const ITEMS_PER_PAGE = 2;
+
 // exports.getProducts = (req, res, next) => {
 //     res.render('product/index', {
 //         title: 'All Products'
@@ -8,13 +10,46 @@ const Product = require('./../models/product.js');
 // }
 
 exports.getProducts = (req, res, next) => {
+    const page = +req.query.page || 1;
+    let totalItems;
+
     Product.find()
+        .countDocuments()
+        // numProducts = alias
+        .then(numProducts => {
+            totalItems = numProducts;
+            return Product.find()
+                .skip((page - 1) * ITEMS_PER_PAGE)
+                .limit(ITEMS_PER_PAGE);
+        })
         .then(products => {
             res.render('product/list-product', {
                 prods: products,
-                title: 'All Products'
-            })
-        });
+                title: 'List Products',
+                // Posisi halaman saat user berkunjung
+                currentPage: page,
+                // Melakukan pengecekkan apakah ada halaman selanjutnya
+                hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+                // Melakukan pengecekkan apakah ada halaman sebelumnya
+                hasPreviousPage: page > 1,
+                // Halaman selanjutnya
+                nextPage: page + 1,
+                // Halaman sebelumnya
+                previousPage: page - 1,
+                // Halaman terakhir
+                lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
+            });
+        })
+        .catch(err => console.log(err));
+
+    // Tanpa Pagination
+    // Product.find()
+    //     .then(products => {
+    //         res.render('product/list-product', {
+    //             prods: products,
+    //             title: 'All Products'
+    //         })
+    //     });
 }
 
 exports.getProducts2 = async (req, res, next) => {
