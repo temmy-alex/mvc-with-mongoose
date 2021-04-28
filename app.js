@@ -19,6 +19,9 @@ const csrf = require('csurf');
 // Library for flash messages
 const flash = require('connect-flash');
 
+// Multer
+const multer = require('multer');
+
 const User = require('./models/user');
 
 // Create constants for open connection mongodb
@@ -35,6 +38,29 @@ const store = new MongoDBStore({
 // Call csrf library
 const csrfProtection = csrf();
 
+// Set File Storage for Image
+const fileStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'images');
+    },
+    filename: (req, file, cb) => {
+        cb(null, new Date().toISOString() + '-' + file.originalname);
+    }
+});
+
+// Filter image 
+// Validasi mime type (validasi yang digunakan untuk mengecek extension dokumen)
+const fileFilter = (req, file, cb) => {
+    if (
+        file.mimetype === 'image/png' || 
+        file.mimetype === 'image/jpg' || 
+        file.mimetype === 'image/jpeg') {
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
+};
+
 // Use view engine ejs
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -50,9 +76,16 @@ app.use(express.json());
 // Use for upload image
 app.use(express.urlencoded({extended: false}));
 
+// Middleware for use image 
+app.use(
+    multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
+)
+
 // Get static from folder public / call assets from folder public
 // app.use(express.static(path.join('public')));
 app.use(express.static('public'));
+// Path untuk menyimpan image
+app.use('/images', express.static('images'));
 
 app.use(session({
     secret: 'secret',

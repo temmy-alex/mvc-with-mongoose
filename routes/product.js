@@ -17,9 +17,9 @@ router.post('/add-product',
             .isString()
             .isLength({ min: 3 })
             .trim(),
-        body('imageUrl')
-            .isURL()
-            .withMessage('Format harus URL'),
+        // body('imageUrl')
+        //     .isURL()
+        //     .withMessage('Format harus URL'),
         body('price')
             .isFloat()
             .withMessage('Harga harus diisi angka'),
@@ -32,7 +32,18 @@ router.post('/add-product',
      productController.postAddProduct);
 
 router.get('/edit-product/:productId', isAuth, productController.getEditProduct);
-router.post('/edit-product', isAuth, productController.postEditProduct);
+router.post('/edit-product',[
+    body('title')
+        .isString()
+        .isLength({ min: 3 })
+        .trim(),
+    body('price').isFloat(),
+    body('description')
+        .isLength({ min: 5, max: 400 })
+        .trim()
+], 
+isAuth, 
+productController.postEditProduct);
 router.post('/delete-product', isAuth, productController.postDeleteProduct);
 
 module.exports = router;
